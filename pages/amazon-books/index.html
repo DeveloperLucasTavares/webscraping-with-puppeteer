@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 50 books - Amazon Store</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #E5E6F0;
+        }
+
+        h1 {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 40px;
+            text-align: center;
+        }
+
+        .container { 
+            margin-top: 30px;
+            margin-bottom: 30px;
+            max-width: 100%;
+            max-height: 100%;
+            
+            display: flex;
+        }
+
+        .container .content {
+            max-width: 1000px;
+            max-height: 100%;
+            margin: 0 auto;
+
+            flex:1;
+        }
+
+        .container .content ul {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            list-style: none;
+        }
+
+        .container .content ul li {
+            margin-top: 10px;
+            padding: 5px 12px;
+            background: #FFFFFF;
+            box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            align-items: center;
+            
+            display: flex;
+        }
+
+        .container .content ul li img {
+            width: 150px;
+            height: 150px;
+            transition: opacity 0.2s;
+        }
+
+        .container .content ul li img:hover {
+            opacity: 0.8;
+            cursor: pointer;
+        }
+
+        .container .content ul li .book-info {
+            margin-left: 15px;
+            line-height: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            display: block;
+        }
+
+        .container .content ul li .book-info >p {
+            margin-top: 20px;
+        }
+
+        .container .content ul li .book-info p.author {
+            font-weight: normal;
+            color: #666;
+        }
+
+        .container .content ul li .book-info p.price {
+            color: rgb(233, 102, 15);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>MAIS VENDIDOS #50</h1>
+            <ul class='book-list'></ul>
+        </div>
+    </div>
+    <script>
+        (async () => {
+            const response = await fetch('../../data/amazon-books.json');
+
+            const data = await response.json();
+
+            const bookList = data.map((book, index) => 
+                `<li>
+                    <a href='${book.url}'>
+                        <img src='${book.src}' alt='${book.title}'/>
+                    </a>
+                        <div class='book-info'>
+                            <strong>#${index+1}- ${book.title}</strong>
+                            <p class='author'>${book.author}</p>
+                            <p class='price'>${book.price}</p>
+                        </div>
+                 </li>`).join('')
+            ;
+
+            document.querySelector('.container ul').innerHTML = bookList;
+        })();
+    </script>
+</body>
+</html>
